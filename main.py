@@ -14,12 +14,12 @@ RECOG_MODEL_PATH_1: str = os.path.join(MODEL_BASE_PATH, "recog_model_1.xml")
 RECOG_MODEL_PATH_2: str = os.path.join(MODEL_BASE_PATH, "recog_model_2.xml")
 RECOG_MODEL_PATH_3: str = os.path.join(MODEL_BASE_PATH, "recog_model_3.xml")
 
-IMAGE_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), "images")
+IMAGE_PATH: str = os.path.join(os.path.abspath(os.path.dirname(__file__)), "images")
 
-ID: int = 0
+ID: int         = 0
 CAM_WIDTH: int  = 640
 CAM_HEIGHT: int = 360 
-FPS: int = 30
+FPS: int        = 30
 
 
 def breaker(num: int=50, char: str="*") -> None:
