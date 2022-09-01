@@ -5,3 +5,5 @@
 - Models used 
     - `face-detection-retail-0044`
     - recog_model_1 (arcface) = `face-recognition-resnet100-arcface-onnx`
+    - recog_model_2 (facenet) = `facenet-20180408-102900`
+    - recog_model_3 (sphereface) = `Sphereface`
