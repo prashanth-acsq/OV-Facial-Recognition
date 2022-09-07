@@ -91,7 +91,7 @@ def main():
 
     # CLI Argument Parsing
     parser = argparse.ArgumentParser()
-    parser.add_argument("--filename", "-f", type=str, default="Test_3.jpg", help="Image Filename")
+    parser.add_argument("--filename", "-f", type=str, default="Test_1.jpg", help="Image Filename")
     parser.add_argument("--target", "-t", type=str, default="CPU", help="Target Device for Inference")
     parser.add_argument("--model", "-m", type=str, default="facenet", help="Model to Use (arcface, facenet, sphereface)")
     args = parser.parse_args()
