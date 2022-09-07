@@ -7,3 +7,7 @@
     - recog_model_1 (arcface) = `face-recognition-resnet100-arcface-onnx`
     - recog_model_2 (facenet) = `facenet-20180408-102900`
     - recog_model_3 (sphereface) = `Sphereface`
+- CLI Arguments
+    - `--filename | -f` - Filename of the Reference Image (placed in the `images` folder)
+    - `--target | -t`   - Target device to perform inference on (Available: `CPU` and `GPU`, Default: `CPU`)
+    - `--model | -m`    - Recognition Model to Use (Available: `arcface`, `facenet` and `sphereface`, Default: `facenet`)
