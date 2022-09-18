@@ -100,7 +100,6 @@ def show_images(
     title: Union[str, None]=None,
 ) -> None:
     plt.figure()
-    plt.rcParams.update({"font.size" : 36})
     plt.subplot(1, 2, 1)
     plt.imshow(cv2.cvtColor(src=image_1, code=cv2.COLOR_BGR2RGB), cmap_1)
     plt.axis("off")
@@ -111,7 +110,7 @@ def show_images(
     if title_2: plt.title(title_2)
     figmanager = plt.get_current_fig_manager()
     figmanager.window.state("zoomed")
-    if title: plt.suptitle(title)
+    if title: plt.suptitle(title, fontsize=28)
     plt.show()
 
 
@@ -164,21 +163,33 @@ def main():
     if args.mode == "image":
         assert args.filename2 in os.listdir(IMAGE_PATH), "File 2 not Found"
 
-        comp_image = cv2.imread(os.path.join(IMAGE_PATH, args.filename2), cv2.IMREAD_COLOR)
-        disp_image_2 = comp_image.copy()
+        # Read Test Image and Apply CLAHE
+        image = cv2.imread(os.path.join(IMAGE_PATH, args.filename2), cv2.IMREAD_COLOR)
+        disp_image_2 = image.copy()
         for i in range(3):
-            comp_image[:, :, i] = clahe.apply(comp_image[:, :, i])
-        temp_image = comp_image.copy()
-        h, w, _ = comp_image.shape
+            image[:, :, i] = clahe.apply(image[:, :, i])
+        temp_image = image.copy()
+        h, w, _ = image.shape
 
-        comp_image = preprocess(comp_image, d_W, d_H)
-        _, _, boxes = detect_faces(d_model, d_output_layer, comp_image, w, h)
+        # Preprocess Image and Detect Faces
+        image = preprocess(image, d_W, d_H)
+        _, _, boxes = detect_faces(d_model, d_output_layer, image, w, h)
 
+        # Preprocess face ROI Image and get embeddings
         face_image = preprocess(temp_image[boxes[0][1]:boxes[0][3], boxes[0][0]:boxes[0][2], :], r_W, r_H, args.model)
-        
         embeddings = r_model(inputs=[face_image])[r_output_layer]
+
+        # Compute Cosine Similarity between embeddings
         cs = cosine_similarity(reference_embeddings, embeddings)[0][0]
-        show_images(disp_image_1, disp_image_2, title=f"Score : {cs:.2f}")
+
+        # Display the images along with the score
+        show_images(
+            disp_image_1, 
+            disp_image_2, 
+            title_1="Reference",
+            title_2="Test",
+            title=f"Score : {cs:.2f}"
+        )
 
 
     elif args.mode == "realtime":
