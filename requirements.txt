@@ -1,2 +1,3 @@
 openvino
+matplotlib==3.4.3
 opencv-python==4.6.0.66
