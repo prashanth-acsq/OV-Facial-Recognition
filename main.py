@@ -159,6 +159,8 @@ def main():
     face_image = preprocess(temp_image[boxes[0][1]:boxes[0][3], boxes[0][0]:boxes[0][2], :], r_W, r_H, args.model)
     reference_embeddings = r_model(inputs=[face_image])[r_output_layer]
 
+    del temp_image, boxes, image
+
     if args.mode == "image":
         assert args.filename2 in os.listdir(IMAGE_PATH), "File 2 not Found"
 
@@ -173,9 +175,7 @@ def main():
         _, _, boxes = detect_faces(d_model, d_output_layer, comp_image, w, h)
 
         face_image = preprocess(temp_image[boxes[0][1]:boxes[0][3], boxes[0][0]:boxes[0][2], :], r_W, r_H, args.model)
-
-        # if face_image.shape[0] < 32 or face_image.shape[1] < 32: print("ROI to small to detect")
-        # else:
+        
         embeddings = r_model(inputs=[face_image])[r_output_layer]
         cs = cosine_similarity(reference_embeddings, embeddings)[0][0]
         show_images(disp_image_1, disp_image_2, title=f"Score : {cs:.2f}")
@@ -218,7 +218,7 @@ def main():
             face_frame = temp_frame[boxes[0][1]:boxes[0][3], boxes[0][0]:boxes[0][2], :]
 
             # If condition is met, compute Cosine Similarity between embeddings
-            if face_frame.shape[0] < 32 or face_frame.shape[1] < 32:
+            if face_frame.shape[0] < 16 or face_frame.shape[1] < 16:
                 # print("ROI to small to detect")
                 cv2.putText(disp_frame, "ROI to small to detect", org=(25, 75), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, thickness=1, color=(0, 0, 255))
             else:
