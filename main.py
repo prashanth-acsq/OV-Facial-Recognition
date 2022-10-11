@@ -62,7 +62,8 @@ def detect_faces(
     output_layer, 
     image: np.ndarray, 
     w: int, 
-    h: int
+    h: int,
+    threshold: float=0.9,
 ) -> tuple:
     """
         Detect faces in the image. Returns a tuple of label indexes, probabilities and bounding boxes. (Possibly switch to detect only single face)
@@ -79,13 +80,15 @@ def detect_faces(
         for i in range(result.shape[0]):
             if result[i][0] == -1:
                 break
-            else:
+            elif result[i][2] > threshold:
                 label_indexes.append(int(result[i][1]))
                 probs.append(result[i][2])
                 boxes.append([int(result[i][3] * w), \
                               int(result[i][4] * h), \
                               int(result[i][5] * w), \
                               int(result[i][6] * h)])
+            else:
+                pass
         
     return label_indexes, probs, boxes
 
