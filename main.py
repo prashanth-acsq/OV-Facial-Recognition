@@ -28,10 +28,11 @@ def preprocess(image: np.ndarray, width: int, height: int, model_name: str="arcf
     """
         Preprocess the image file to prepare for inference
     """
-    if model_name == "arcface" or model_name == "sphereface":
-        image = cv2.resize(src=image, dsize=(width, height), interpolation=cv2.INTER_AREA).transpose(2, 0, 1)
-    else:
+    if model_name == "facenet":
         image = cv2.resize(src=image, dsize=(width, height), interpolation=cv2.INTER_AREA)
+    else:
+        image = cv2.resize(src=image, dsize=(width, height), interpolation=cv2.INTER_AREA).transpose(2, 0, 1)
+    
     return np.expand_dims(image, axis=0)
 
 
