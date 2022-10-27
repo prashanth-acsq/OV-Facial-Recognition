@@ -180,7 +180,10 @@ def main():
         _, _, boxes = detect_faces(d_model, d_output_layer, image, w, h)
 
         # Preprocess face ROI Image and get embeddings
-        face_image = preprocess(temp_image[boxes[0][1]:boxes[0][3], boxes[0][0]:boxes[0][2], :], r_W, r_H, args.model)
+        if len(boxes) != 0:
+            face_frame = temp_frame[boxes[0][1]:boxes[0][3], boxes[0][0]:boxes[0][2], :]
+        else:
+            face_frame = temp_frame
         embeddings = r_model(inputs=[face_image])[r_output_layer]
 
         # Compute Cosine Similarity between embeddings
@@ -230,7 +233,10 @@ def main():
             _, _, boxes = detect_faces(d_model, d_output_layer, frame, CAM_WIDTH, CAM_HEIGHT)
 
             # Preprocess face ROI Frame and get embeddings
-            face_frame = temp_frame[boxes[0][1]:boxes[0][3], boxes[0][0]:boxes[0][2], :]
+            if len(boxes) != 0:
+                face_frame = temp_frame[boxes[0][1]:boxes[0][3], boxes[0][0]:boxes[0][2], :]
+            else:
+                face_frame = temp_frame
 
             # If condition is met, compute Cosine Similarity between embeddings
             if face_frame.shape[0] < 16 or face_frame.shape[1] < 16:
